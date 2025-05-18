@@ -1,0 +1,39 @@
+/* styles/index.css */
+
+/*
+  Este archivo es para estilos personalizados mínimos que complementen a Tailwind CSS.
+  En la mayoría de los casos, Tailwind será suficiente.
+
+  Ejemplo de un estilo personalizado que podrías añadir aquí:
+  .custom-gradient {
+    background-image: linear-gradient(to right, var(--tw-gradient-stops));
+  }
+*/
+
+/* No hay estilos personalizados adicionales requeridos por el momento,
+   ya que los estilos base y de componentes se han definido en el <style> del index.html
+   o se manejarán directamente con clases de Tailwind. */
+
+/* Puedes añadir aquí cualquier estilo global muy específico que necesites.
+   Por ejemplo, si quisieras un estilo de scrollbar personalizado para toda la aplicación: */
+
+/*
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1; // slate-300
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8; // slate-500
+}
+*/
