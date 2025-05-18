@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia de Empleabilidad</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Estilos personalizados mínimos, si son necesarios */
+        body {
+            font-family: 'Inter', sans-serif; /* Fuente Inter como base */
+        }
+        /* Estilos para asegurar que el footer se quede abajo */
+        .app-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        main {
+            flex-grow: 1;
+        }
+        /* Clases para transiciones suaves (opcional, pero mejora la UX) */
+        .transition-opacity {
+            transition-property: opacity;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 300ms;
+        }
+        .fade-in {
+            opacity: 1;
+        }
+        .fade-out {
+            opacity: 0;
+        }
+        /* Estilo para las tarjetas de preguntas y opciones */
+        .card {
+            background-color: white;
+            border-radius: 0.75rem; /* Esquinas redondeadas */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem; /* p-6 */
+        }
+        .option-button {
+            border: 1px solid #E5E7EB; /* gray-200 */
+            border-radius: 0.5rem; /* rounded-lg */
+            padding: 0.75rem 1rem; /* py-3 px-4 */
+            transition: background-color 0.2s, border-color 0.2s;
+            text-align: left;
+            width: 100%;
+        }
+        .option-button:hover {
+            background-color: #F3F4F6; /* gray-100 */
+            border-color: #D1D5DB; /* gray-300 */
+        }
+        .option-button.selected {
+            /* Se aplicarán clases de Tailwind dinámicamente para correcto/incorrecto */
+        }
+        .option-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        .btn-primary {
+            background-color: #3B82F6; /* blue-500 */
+            color: white;
+            font-weight: 600; /* semibold */
+            padding: 0.75rem 1.5rem; /* py-3 px-6 */
+            border-radius: 0.5rem; /* rounded-lg */
+            transition: background-color 0.2s;
+        }
+        .btn-primary:hover {
+            background-color: #2563EB; /* blue-600 */
+        }
+        .btn-secondary {
+            background-color: #6B7280; /* gray-500 */
+            color: white;
+            font-weight: 600; /* semibold */
+            padding: 0.75rem 1.5rem; /* py-3 px-6 */
+            border-radius: 0.5rem; /* rounded-lg */
+            transition: background-color 0.2s;
+        }
+        .btn-secondary:hover {
+            background-color: #4B5563; /* gray-600 */
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-slate-100 text-slate-800">
+
+    <div class="app-container">
+        <header class="bg-sky-600 shadow-md">
+            <div class="container mx-auto px-4 py-4">
+                <h1 class="text-2xl sm:text-3xl font-bold text-white text-center">Trivia de Empleabilidad</h1>
+            </div>
+        </header>
+
+        <main class="container mx-auto px-4 py-8">
+            <section id="start-screen" class="text-center">
+                <div class="card max-w-2xl mx-auto">
+                    <h2 class="text-2xl font-semibold mb-4 text-sky-700">¡Bienvenido/a!</h2>
+                    <p class="mb-6 text-slate-600">
+                        Pon a prueba tus conocimientos sobre la materia "Ampliación de Itinerario para la Empleabilidad"
+                        con este juego de trivia. Cada partida consta de 25 preguntas. ¡Mucha suerte!
+                    </p>
+                    <button id="start-game-btn" class="btn-primary text-lg">
+                        Comenzar Juego
+                    </button>
+                    <div id="error-message-container" class="mt-6 text-red-500 font-semibold">
+                        </div>
+                </div>
+            </section>
+
+            <section id="question-screen" class="hidden">
+                <div class="card max-w-3xl mx-auto">
+                    <div class="mb-6 flex flex-col sm:flex-row justify-between items-center">
+                        <div id="question-counter" class="text-sm font-semibold text-slate-500 mb-2 sm:mb-0">Pregunta X / 25</div>
+                        <div id="score-counter" class="text-sm font-semibold text-slate-500">Aciertos: 0 | Fallos: 0</div>
+                    </div>
+
+                    <div id="question-card" class="mb-6">
+                        <h3 id="question-text" class="text-xl font-semibold mb-6 text-slate-700 min-h-[3em]">
+                            </h3>
+                        <div id="options-container" class="space-y-3">
+                            </div>
+                    </div>
+
+                    <div id="feedback-container" class="mt-4">
+                        <p id="feedback-text" class="text-md font-medium mb-2"></p>
+                        <p id="explanation-text" class="text-sm text-slate-600 mb-4 p-3 bg-slate-50 rounded-md border border-slate-200"></p>
+                        <button id="next-question-btn" class="btn-primary w-full sm:w-auto hidden">
+                            Siguiente Pregunta
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="end-screen" class="hidden">
+                <div class="card max-w-md mx-auto text-center">
+                    <h2 class="text-2xl font-semibold mb-4 text-sky-700">¡Partida Finalizada!</h2>
+                    <div id="final-score" class="text-lg mb-6">
+                        <p>Aciertos: <span id="correct-answers-final">0</span></p>
+                        <p>Fallos: <span id="incorrect-answers-final">0</span></p>
+                    </div>
+                    <button id="play-again-btn" class="btn-primary text-lg">
+                        Jugar de Nuevo
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <footer class="bg-slate-700 text-white text-center p-4 mt-auto">
+            <p class="text-sm">&copy; 2024 Juego de Trivia Educativo. Desarrollado con fines didácticos.</p>
+        </footer>
+    </div>
+
+    <script type="module" src="index.js"></script>
+</body>
+</html>
